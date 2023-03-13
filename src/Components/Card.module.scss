@@ -1,0 +1,28 @@
+.card{
+    width: 200px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 1px solid teal;
+    gap: 5px;
+    position: relative;
+    p{
+      padding: 0;
+      margin: 0;
+    }
+    &__descriptor {
+      cursor: pointer;
+      background-color: wheat;
+      border-radius: 5px;
+    }
+    &__description{
+      position: absolute;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: wheat;
+      top: -30%;
+      right: -20%;
+      width: 200px;
+    }
+}
