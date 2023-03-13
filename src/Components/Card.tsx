@@ -20,7 +20,10 @@ class Card extends Component<IProps, IState> {
   render() {
     return (
       <div className={styles.card}>
-        <img src={this.data.thumbnail} alt="img" width="200" />
+        <div
+          style={{ backgroundImage: `url('${this.data.thumbnail}')` }}
+          className={styles.card__image}
+        />
         <p>
           <strong>Brand :</strong>
           {this.data.brand}

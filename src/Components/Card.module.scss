@@ -11,6 +11,13 @@
       padding: 0;
       margin: 0;
     }
+    &__image{
+      width: 200px;
+      height: 200px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
     &__descriptor {
       cursor: pointer;
       background-color: wheat;
@@ -21,8 +28,7 @@
       padding: 10px;
       border-radius: 10px;
       background-color: wheat;
-      top: -30%;
-      right: -20%;
+      top: -10%;
       width: 200px;
     }
 }
