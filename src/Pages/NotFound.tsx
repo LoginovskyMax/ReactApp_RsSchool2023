@@ -1,8 +1,19 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
+interface Iprops {
+  is404: (yes: boolean) => void;
+}
 
-export class NotFound extends Component {
-  static propTypes = {};
+export class NotFound extends Component<Iprops> {
   history = window.history;
+  constructor(props: Iprops) {
+    super(props);
+  }
+  componentDidMount(): void {
+    this.props.is404(true);
+  }
+  componentWillUnmount(): void {
+    this.props.is404(false);
+  }
   render() {
     return (
       <div>
