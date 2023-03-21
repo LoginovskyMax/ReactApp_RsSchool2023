@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Card from '../Components/Card';
-import products from '../assets/products.json';
+import Card from '../../Components/Card/Card';
+import products from '../../assets/products.json';
 
 export interface IProduct {
   brand: string;

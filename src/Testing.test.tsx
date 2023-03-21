@@ -1,13 +1,13 @@
 import { render, screen } from '@testing-library/react';
-import Card from './Components/Card';
-import NotFound from './Pages/NotFound';
-import MainPage from './Pages/MainPage';
-import About from './Pages/About';
+import Card from './Components/Card/Card';
+import NotFound from './Pages/404/NotFound';
+import MainPage from './Pages/MainPage/MainPage';
+import About from './Pages/About/About';
 import products from './assets/products.json';
 
 describe('Expected components in DOM', () => {
   it('not found created', () => {
-    render(<NotFound></NotFound>);
+    render(<NotFound is404={()=>{}}></NotFound>);
     expect(screen.getByText(/Back/i)).toBeInTheDocument();
   });
   it('card created', () => {
@@ -16,7 +16,7 @@ describe('Expected components in DOM', () => {
   });
   it('100 cardds rendered', () => {
     products.map((item) => render(<Card data={item}></Card>));
-    expect(screen.getAllByRole('img')).toHaveLength(100);
+    expect(screen.getAllByText('Description')).toHaveLength(100);
   });
   it('MainPage created', () => {
     render(<MainPage />);

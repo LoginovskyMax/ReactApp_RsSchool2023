@@ -1,10 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
-import MainPage from './Pages/MainPage';
-import About from './Pages/About';
-import NotFound from './Pages/NotFound';
+import MainPage from './Pages/MainPage/MainPage';
+import About from './Pages/About/About';
+import Form from './Pages/Form/Form';
+import NotFound from './Pages/404/NotFound';
 
 import './App.scss';
-import Header from './Components/Header';
+import Header from './Components/Header/Header';
 import { Component } from 'react';
 
 interface IState {
@@ -30,6 +31,7 @@ class App extends Component<object, IState> {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/about" element={<About />} />
+          <Route path="/add" element={<Form />} />
           <Route path="*" element={<NotFound is404={this.is404} />} />
         </Routes>
       </div>

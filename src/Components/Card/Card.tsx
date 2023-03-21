@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './Card.module.scss';
-import { IProduct } from '../Pages/MainPage';
+import { IProduct } from '../../Pages/MainPage/MainPage';
 
 interface IProps {
   data: IProduct;
@@ -23,6 +23,7 @@ class Card extends Component<IProps, IState> {
         <div
           style={{ backgroundImage: `url('${this.data.thumbnail}')` }}
           className={styles.card__image}
+          
         />
         <p>
           <strong>Brand :</strong>

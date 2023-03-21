@@ -21,7 +21,8 @@ export default class Header extends Component<Iprops, IState> {
     loc = loc.slice(loc.lastIndexOf('/'));
     if (loc === '/') this.setState({ location: 'Main page' });
     if (loc === '/about') this.setState({ location: 'About' });
-    if (loc !== '/' && loc !== '/about') this.setState({ location: '404' });
+    if (loc === '/add-card') this.setState({ location: 'Add-card' });
+    if (loc !== '/' && loc !== '/about' && loc !== '/add-card') this.setState({ location: '404' });
   }
   componentDidUpdate(prevProps: Readonly<Iprops>): void {
     if (this.props.is404 !== prevProps.is404) {
@@ -42,16 +43,25 @@ export default class Header extends Component<Iprops, IState> {
               this.setState({ location: 'Main page' });
             }}
           >
-            Main
+            Main 
           </NavLink>{' '}
-          |
+          | 
           <NavLink
             to={'/about'}
             onClick={() => {
               this.setState({ location: 'About' });
             }}
           >
-            About
+            About 
+          </NavLink>
+          | 
+          <NavLink
+            to={'/add'}
+            onClick={() => {
+              this.setState({ location: 'Add-card' });
+            }}
+          >
+            Add card 
           </NavLink>
         </div>
       </div>
