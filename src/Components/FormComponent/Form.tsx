@@ -1,15 +1,22 @@
 import React, { Component } from 'react'
 import styles from './Form.module.scss'
+import Card from '../Card/Card'
+import { IProduct } from '../../Pages/MainPage/MainPage'
+import svg from '../../assets/download.png'
+import Alert from '../Alert/Alert'
 
 const categoryes = ['smartphones', 'laptops', 'fragrances', 'skincare', 'groceries', 'home-decoration',
  'furniture', 'womens-dresses']
 const stocks = [10,50,100]
 
 interface IState {
-    errors: boolean[]
+    errors: boolean[],
+    showCard:boolean,
+    cardData:IProduct[]
 }
 
 export default class Form extends Component<object, IState> {
+    title = React.createRef<HTMLInputElement>()
     brand = React.createRef<HTMLInputElement>()
     description = React.createRef<HTMLTextAreaElement>()
     category = React.createRef<HTMLSelectElement>()
@@ -20,15 +27,19 @@ export default class Form extends Component<object, IState> {
     image = React.createRef<HTMLInputElement>()
     constructor(props:object){
         super(props)
-        this.state = {errors:[false,false,false,false,false]}
+        this.state = {
+          errors:[false,false,false,false,false],
+          showCard:false,
+          cardData:[]}
     }
     
 
     handleSubmit(e:React.FormEvent){
+      this.getStockValue()
        e.preventDefault()
+       
        if(this.brand.current !== null){
-        if(this.brand.current.value === ""){this.errorMaker(0)}
-       }
+        if(this.brand.current.value === ""){this.errorMaker(0)}}
 
        if(this.description.current !== null){
         if(this.description.current.value === ""){this.errorMaker(1)}
@@ -43,6 +54,7 @@ export default class Form extends Component<object, IState> {
        }
 
        if(this.image.current !== null && this.image.current.files !==null){
+        // console.log(this.image.current.files);
         if(this.image.current.files[0] === undefined){this.errorMaker(4)}
        }
 
@@ -50,8 +62,11 @@ export default class Form extends Component<object, IState> {
         if(this.date.current.value === ''){this.errorMaker(5)}
        }
 
+       if(this.title.current !== null){
+        if(this.title.current.value === ""){this.errorMaker(6)}}
+
        if(this.state.errors.every(err=>!err)){
-        console.log("right form");
+          this.submitForm()
        }
     }
  
@@ -59,35 +74,107 @@ export default class Form extends Component<object, IState> {
         let arr = this.state.errors
         arr.splice(position,1,true)
         this.setState({errors:arr})
+        // setTimeout(()=>{
+        //     arr.splice(position,1,false)
+        //     this.setState({errors:arr})
+        // },2000)
+    }
+
+    deleteError(position:number){
+      let arr = this.state.errors
+      arr.splice(position,1,false)
+      this.setState({errors:arr})
+    }
+
+    submitForm(){
+      let imgSrc = ''
+      let imgsArr:string[]=[]
+      if(this.image.current !== null && this.image.current.files !==null){
+        imgSrc = URL.createObjectURL(this.image.current.files[0])
+        imgsArr.push(imgSrc)
+       }
+
+      let newDiscount = 0
+      if(this.discount.current !== null){
+        if(this.discount.current.checked)newDiscount=15
+       }
+      if(this.brand.current!==null &&
+        this.description.current!==null &&
+        this.price.current!==null &&
+        this.title.current!==null && 
+        this.category.current !== null){
+          let newCard = {
+            id: Date.now(),
+            brand:this.brand.current.value,
+            description:this.description.current.value,
+            price: parseFloat(this.price.current.value),
+            rating:5,
+            stock:this.getStockValue() as number, 
+            thumbnail:imgSrc,
+            title:this.title.current.value,
+            discountPercentage:newDiscount,
+            images:imgsArr,
+            category:this.category.current.value
+        }
+        let newArr = this.state.cardData
+        newArr.push(newCard)
+        this.setState({cardData:newArr, showCard:true}) 
+        
+        }
+
+    }
+
+    getStockValue(){
+      if(this.stock.current !== null){
+        let arr = [...this.stock.current.children]
+        let inpArr =  arr.map(child=>child.lastChild as HTMLInputElement) 
+        let val = inpArr.find(inp => inp.checked === true) 
+        if(val)return parseFloat(val.value)
+       }
     }
 
   render() {
     return (
-      <div>
+      <div className={styles.wrapper}>
         <form className={styles.form} onSubmit={(e)=>this.handleSubmit(e)}>
-          <p>Brand</p>
-          <input type="text" placeholder='Add brand...' ref={this.brand}/>
-          {this.state.errors[0] && <p>Add brand</p>}
-          <p>Description</p>
-          <textarea placeholder='Add your description...' ref={this.description}></textarea>
-          {this.state.errors[1] && <p>Add description</p>}
-          <select ref={this.category}>
+          <p className={styles.form__title}>Title</p>
+          <input type="text" placeholder='Add title...' ref={this.title} onInput={()=>this.deleteError(6)}/>
+          <Alert text='Add title' show={this.state.errors[6]}/>
+      
+          <p className={styles.form__title}>Brand</p>
+          <input type="text" placeholder='Add brand...' ref={this.brand} onInput={()=>this.deleteError(0)}/>
+          <Alert text='Add brand!' show={this.state.errors[0]}/>
+
+          <p className={styles.form__title}>Description</p>
+          <textarea placeholder='Add your description...' ref={this.description} onInput={()=>this.deleteError(1)}></textarea>
+          <Alert text='Add description!' show={this.state.errors[1]}/>
+
+          <select ref={this.category} onInput={()=>this.deleteError(2)}>
             <option value="0" key='0'>Choose category</option>
             {categoryes.map(cat => <option key={cat} value={cat}>{cat}</option>)}
           </select>
-          {this.state.errors[2] && <p>Add category</p>}
-          <p >Price</p>
-          <input type="number" placeholder='Add price' ref={this.price}/>
-          {this.state.errors[3] && <p>Add price</p>}
-           <label >
+           <Alert text='Add category!' show={this.state.errors[2]}/>
+
+          <p className={styles.form__title}>Price</p>
+          <input type="number" placeholder='Add price' ref={this.price} onInput={()=>this.deleteError(3)}/>
+          <Alert text='Add price!' show={this.state.errors[3]}/>
+
+           <label className={styles.form__title}>
               Add discount
               <input type="checkbox" ref={this.discount}/>
            </label>
 
-           <p>Upload foto</p>
-           <input type="file" ref={this.image} />
-           {this.state.errors[4] && <p>Add image</p>}
-            <p>Stock</p>
+           <p className={styles.form__title}>Upload foto</p>
+           <div className={styles.input__wrapper}>
+                <input name="file" type="file" id="input__file" className={styles.input__file} ref={this.image} accept="image/*" onInput={()=>this.deleteError(4)}/>
+                <label htmlFor='input__file' className={styles.input__file_button}>
+                   <span className={styles['input__file-icon-wrapper']}><img className={styles["input__file-icon"]} src={svg} alt="img" width="25"/></span>
+                   <span className={styles["input__file-button-text"]}>Choose image</span>
+                </label>
+            </div>
+            <Alert text='Add image!' show={this.state.errors[4]}/>
+
+            <p className={styles.form__title}>Stock</p>
             <fieldset ref={this.stock}>
                 {stocks.map(val=> <label  key={val}>
                 {val}
@@ -95,11 +182,16 @@ export default class Form extends Component<object, IState> {
             </label>)}
             </fieldset>
            
-            <p>Production date</p>
-            <input type="date" ref={this.date}/>
-            {this.state.errors[5] && <p>Add date</p>}
+            <p className={styles.form__title}>Production date</p>
+            <input type="date" ref={this.date} onInput={()=>this.deleteError(5)}/>
+            <Alert text='Add date!' show={this.state.errors[5]}/>
             <button type='submit' >Create</button>
         </form>
+
+        <div className="mainPage__conteiner">
+           {this.state.cardData.map(data=><Card data={data} key={data.id}/>)}
+        </div>
+       
       </div>
     )
   }

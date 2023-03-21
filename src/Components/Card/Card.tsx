@@ -25,6 +25,10 @@ class Card extends Component<IProps, IState> {
           className={styles.card__image}
           
         />
+          <p>
+          <strong>Name :</strong>
+          {this.data.title}
+        </p>
         <p>
           <strong>Brand :</strong>
           {this.data.brand}
