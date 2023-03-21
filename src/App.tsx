@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import MainPage from './Pages/MainPage/MainPage';
 import About from './Pages/About/About';
-import Form from './Pages/Form/Form';
+import AddCard from './Pages/AddCard/AddCard';
 import NotFound from './Pages/404/NotFound';
 
 import './App.scss';
@@ -31,7 +31,7 @@ class App extends Component<object, IState> {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/about" element={<About />} />
-          <Route path="/add" element={<Form />} />
+          <Route path="/add" element={<AddCard />} />
           <Route path="*" element={<NotFound is404={this.is404} />} />
         </Routes>
       </div>

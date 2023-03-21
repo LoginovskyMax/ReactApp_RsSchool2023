@@ -21,8 +21,8 @@ export default class Header extends Component<Iprops, IState> {
     loc = loc.slice(loc.lastIndexOf('/'));
     if (loc === '/') this.setState({ location: 'Main page' });
     if (loc === '/about') this.setState({ location: 'About' });
-    if (loc === '/add-card') this.setState({ location: 'Add-card' });
-    if (loc !== '/' && loc !== '/about' && loc !== '/add-card') this.setState({ location: '404' });
+    if (loc === '/add') this.setState({ location: 'Add' });
+    if (loc !== '/' && loc !== '/about' && loc !== '/add') this.setState({ location: '404' });
   }
   componentDidUpdate(prevProps: Readonly<Iprops>): void {
     if (this.props.is404 !== prevProps.is404) {
