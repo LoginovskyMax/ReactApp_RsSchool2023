@@ -1,11 +1,11 @@
 import { Component } from 'react';
-interface Iprops {
+interface IProps {
   is404: (yes: boolean) => void;
 }
 
-export class NotFound extends Component<Iprops> {
+export class NotFound extends Component<IProps> {
   history = window.history;
-  constructor(props: Iprops) {
+  constructor(props: IProps) {
     super(props);
   }
   componentDidMount(): void {

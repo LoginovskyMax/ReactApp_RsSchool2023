@@ -16,12 +16,12 @@ export interface IProduct {
   title: string;
 }
 
-interface State {
+interface IState {
   time: number;
   text: string;
 }
 
-class MainPage extends Component<object, State> {
+class MainPage extends Component<object, IState> {
   constructor(props: object) {
     super(props);
     this.state = { time: 0, text: '' };

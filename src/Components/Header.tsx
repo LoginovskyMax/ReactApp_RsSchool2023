@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { Component } from 'react';
 import styles from './Header.module.scss';
 
-interface Iprops {
+interface IProps {
   is404: boolean;
 }
 
@@ -10,8 +10,8 @@ interface IState {
   location: string;
 }
 
-export default class Header extends Component<Iprops, IState> {
-  constructor(props: Iprops) {
+export default class Header extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = { location: '' };
   }
@@ -23,7 +23,7 @@ export default class Header extends Component<Iprops, IState> {
     if (loc === '/about') this.setState({ location: 'About' });
     if (loc !== '/' && loc !== '/about') this.setState({ location: '404' });
   }
-  componentDidUpdate(prevProps: Readonly<Iprops>): void {
+  componentDidUpdate(prevProps: Readonly<IProps>): void {
     if (this.props.is404 !== prevProps.is404) {
       this.changeLocation();
     }
