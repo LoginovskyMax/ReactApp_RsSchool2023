@@ -28,4 +28,45 @@
       background-color: black;
       padding: 20px;
     }
+    &__text_inp{
+      width: 100%;
+      height: 30px;
+      padding: 10px 0 10px 15px;
+      border: 2px solid #7e6dd1;
+      border-radius: 5px;
+      outline: unset;
+    
+      &::placeholder {
+        font-size: 16px;
+        line-height: 20px;
+      }
+    }
+    &__area{
+      width: 100%;
+      height: 100px;
+      padding: 10px 0 10px 15px;
+      border: 2px solid #7e6dd1;
+      border-radius: 5px;
+      outline: unset;
+      resize: none;
+      &::placeholder {
+        font-size: 16px;
+        line-height: 20px;
+      }
+    }
+    &__field{
+      border: none;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    &__select{
+      width: 104%;
+      padding: 10px 15px;
+      border: 2px solid #7e6dd1;
+      border-radius: 5px;
+      outline: unset;
+      font-size: 16px;
+      line-height: 20px;
+    }
 }

@@ -35,33 +35,33 @@ export default class Header extends Component<Iprops, IState> {
   render() {
     return (
       <div className={styles.header}>
-        <h2>{this.state.location}</h2>
-        <div>
+        <h2 className={styles.header__page}>{this.state.location}</h2>
+        <div className={styles.header__links}>
           <NavLink
             to={'/'}
             onClick={() => {
               this.setState({ location: 'Main page' });
             }}
           >
-            Main 
+            Main
           </NavLink>{' '}
-          | 
+          |
           <NavLink
             to={'/about'}
             onClick={() => {
               this.setState({ location: 'About' });
             }}
           >
-            About 
+            About
           </NavLink>
-          | 
+          |
           <NavLink
             to={'/add'}
             onClick={() => {
               this.setState({ location: 'Add-card' });
             }}
           >
-            Add card 
+            Add card
           </NavLink>
         </div>
       </div>

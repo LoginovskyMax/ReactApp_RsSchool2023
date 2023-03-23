@@ -23,9 +23,8 @@ class Card extends Component<IProps, IState> {
         <div
           style={{ backgroundImage: `url('${this.data.thumbnail}')` }}
           className={styles.card__image}
-          
         />
-          <p>
+        <p>
           <strong>Name :</strong>
           {this.data.title}
         </p>
@@ -50,7 +49,7 @@ class Card extends Component<IProps, IState> {
           {this.data.price} $
         </p>
         <p>
-          <strong>Rating:</strong> {this.data.rating}
+          <strong>Stock:</strong> {this.data.stock}
         </p>
       </div>
     );
