@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import styles from './Form.module.scss'
 import Card from '../Card/Card'
 import { IProduct } from '../../Pages/MainPage/MainPage'
-import svg from '../../assets/download.png'
 import Alert from '../Alert/Alert'
+import FileInput from '../FileInput/FileInput'
 
 const categoryes = ['smartphones', 'laptops', 'fragrances', 'skincare', 'groceries', 'home-decoration',
  'furniture', 'womens-dresses']
@@ -11,26 +11,29 @@ const stocks = [10,50,100]
 
 interface IState {
     errors: boolean[],
-    showCard:boolean,
-    cardData:IProduct[]
+    cardData:IProduct[],
+    showModal:boolean
 }
 
 export default class Form extends Component<object, IState> {
+   
     title = React.createRef<HTMLInputElement>()
     brand = React.createRef<HTMLInputElement>()
-    description = React.createRef<HTMLTextAreaElement>()
-    category = React.createRef<HTMLSelectElement>()
-    price = React.createRef<HTMLInputElement>()
-    discount = React.createRef<HTMLInputElement>()
-    stock = React.createRef<HTMLFieldSetElement>()
     date = React.createRef<HTMLInputElement>()
     image = React.createRef<HTMLInputElement>()
+    price = React.createRef<HTMLInputElement>()
+    discount = React.createRef<HTMLInputElement>()
+    description = React.createRef<HTMLTextAreaElement>()
+    category = React.createRef<HTMLSelectElement>()
+    stock = React.createRef<HTMLFieldSetElement>()
+    form = React.createRef<HTMLFormElement>()
+
     constructor(props:object){
         super(props)
         this.state = {
           errors:[false,false,false,false,false],
-          showCard:false,
-          cardData:[]}
+          cardData:[],
+          showModal:false}
     }
     
 
@@ -54,7 +57,6 @@ export default class Form extends Component<object, IState> {
        }
 
        if(this.image.current !== null && this.image.current.files !==null){
-        // console.log(this.image.current.files);
         if(this.image.current.files[0] === undefined){this.errorMaker(4)}
        }
 
@@ -74,10 +76,6 @@ export default class Form extends Component<object, IState> {
         let arr = this.state.errors
         arr.splice(position,1,true)
         this.setState({errors:arr})
-        // setTimeout(()=>{
-        //     arr.splice(position,1,false)
-        //     this.setState({errors:arr})
-        // },2000)
     }
 
     deleteError(position:number){
@@ -118,8 +116,11 @@ export default class Form extends Component<object, IState> {
         }
         let newArr = this.state.cardData
         newArr.push(newCard)
-        this.setState({cardData:newArr, showCard:true}) 
-        
+        this.setState({cardData:newArr, showModal:true}) 
+        setTimeout(()=>{
+          this.setState({showModal:false}) 
+        },2000)
+        this.form.current?.reset()
         }
 
     }
@@ -133,10 +134,14 @@ export default class Form extends Component<object, IState> {
        }
     }
 
+    createRefs(){
+
+    }
+
   render() {
     return (
       <div className={styles.wrapper}>
-        <form className={styles.form} onSubmit={(e)=>this.handleSubmit(e)}>
+        <form className={styles.form} onSubmit={(e)=>this.handleSubmit(e)} ref={this.form}>
           <p className={styles.form__title}>Title</p>
           <input type="text" placeholder='Add title...' ref={this.title} onInput={()=>this.deleteError(6)}/>
           <Alert text='Add title' show={this.state.errors[6]}/>
@@ -165,14 +170,8 @@ export default class Form extends Component<object, IState> {
            </label>
 
            <p className={styles.form__title}>Upload foto</p>
-           <div className={styles.input__wrapper}>
-                <input name="file" type="file" id="input__file" className={styles.input__file} ref={this.image} accept="image/*" onInput={()=>this.deleteError(4)}/>
-                <label htmlFor='input__file' className={styles.input__file_button}>
-                   <span className={styles['input__file-icon-wrapper']}><img className={styles["input__file-icon"]} src={svg} alt="img" width="25"/></span>
-                   <span className={styles["input__file-button-text"]}>Choose image</span>
-                </label>
-            </div>
-            <Alert text='Add image!' show={this.state.errors[4]}/>
+           <FileInput image={this.image} deleteError={()=>this.deleteError(4)}/>
+           <Alert text='Add image!' show={this.state.errors[4]}/>
 
             <p className={styles.form__title}>Stock</p>
             <fieldset ref={this.stock}>
@@ -191,6 +190,8 @@ export default class Form extends Component<object, IState> {
         <div className="mainPage__conteiner">
            {this.state.cardData.map(data=><Card data={data} key={data.id}/>)}
         </div>
+
+        {this.state.showModal && <div  className={styles.form__succes}>Succes!</div>}
        
       </div>
     )
