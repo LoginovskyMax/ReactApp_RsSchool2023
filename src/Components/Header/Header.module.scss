@@ -1,0 +1,19 @@
+.header{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    background-color:#180428;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    margin-bottom: 10px;
+    color: wheat;
+    &__page{
+        color: wheat;
+    }
+    &__links{
+        display: flex;
+        gap: 5px;
+    }
+}

@@ -1,0 +1,34 @@
+.card{
+    width: 200px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 1px solid teal;
+    gap: 5px;
+    position: relative;
+    p{
+      padding: 0;
+      margin: 0;
+    }
+    &__image{
+      width: 200px;
+      height: 200px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    &__descriptor {
+      cursor: pointer;
+      background-color: wheat;
+      border-radius: 5px;
+    }
+    &__description{
+      position: absolute;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: wheat;
+      top: -10%;
+      width: 200px;
+    }
+}
