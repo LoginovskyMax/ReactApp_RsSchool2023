@@ -35,7 +35,7 @@ describe('Expected components in DOM', () => {
   });
   it('AddCard created', () => {
     render(<AddCard />);
-    expect(screen.getByText('You can create a nea card here')).toBeInTheDocument();
+    expect(screen.getByText('You can create a new card here')).toBeInTheDocument();
   });
 
   it('fileInput created', () => {

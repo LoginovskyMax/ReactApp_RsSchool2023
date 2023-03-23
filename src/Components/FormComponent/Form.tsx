@@ -252,7 +252,7 @@ export default class Form extends Component<object, IState> {
           ))}
         </div>
 
-        {this.state.showModal && <div className={styles.form__succes}>Succes!</div>}
+        {this.state.showModal && <div className={styles.form__succes}>Card created!</div>}
       </div>
     );
   }
