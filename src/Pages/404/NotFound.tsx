@@ -1,27 +1,24 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 interface IProps {
   is404: (yes: boolean) => void;
 }
 
-export class NotFound extends Component<IProps> {
-  history = window.history;
-  constructor(props: IProps) {
-    super(props);
-  }
-  componentDidMount(): void {
-    this.props.is404(true);
-  }
-  componentWillUnmount(): void {
-    this.props.is404(false);
-  }
-  render() {
-    return (
-      <div>
-        <h2>NotFound</h2>
-        <button onClick={() => this.history.back()}>Back</button>
-      </div>
-    );
-  }
-}
+const NotFound = ({ is404 }: IProps) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    is404(true);
+    return () => {
+      is404(false);
+    };
+  }, []);
+
+  return (
+    <div>
+      <h2>NotFound</h2>
+      <button onClick={() => navigate('/')}>Back</button>
+    </div>
+  );
+};
 
 export default NotFound;

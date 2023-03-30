@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import styles from './Alert.module.scss';
 
 interface IProps {
@@ -6,12 +5,8 @@ interface IProps {
   show: boolean;
 }
 
-export default class Alert extends Component<IProps> {
-  constructor(props: IProps) {
-    super(props);
-  }
+const Alert = ({ text, show }: IProps) => {
+  return show && <p className={styles.text}>{text}</p>;
+};
 
-  render() {
-    return this.props.show && <p className={styles.text}>{this.props.text}</p>;
-  }
-}
+export default Alert;

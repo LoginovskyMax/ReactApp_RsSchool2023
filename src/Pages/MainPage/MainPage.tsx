@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
 import Card from '../../Components/Card/Card';
 import products from '../../assets/products.json';
+import { useEffect, useState } from 'react';
 
 export interface IProduct {
   brand: string;
@@ -16,51 +16,40 @@ export interface IProduct {
   title: string;
 }
 
-interface IState {
-  time: number;
-  text: string;
-}
+const MainPage = () => {
+  const [text, setText] = useState<string | null>(null);
 
-class MainPage extends Component<object, IState> {
-  constructor(props: object) {
-    super(props);
-    this.state = { time: 0, text: '' };
-  }
-
-  inputText = (event: string) => {
-    this.setState({ text: event });
-  };
-
-  componentDidMount() {
-    if (localStorage.getItem('data')) {
-      this.setState({ text: JSON.parse(localStorage.getItem('data') as string) });
+  useEffect(() => {
+    if (text !== null) {
+      localStorage.setItem('data', JSON.stringify(text));
     }
-  }
+  }, [text]);
 
-  componentWillUnmount() {
-    localStorage.setItem('data', JSON.stringify(this.state.text));
-  }
+  useEffect(() => {
+    if (localStorage.getItem('data')) {
+      setText(JSON.parse(localStorage.getItem('data') as string));
+    }
+  }, []);
 
-  render() {
-    return (
-      <div className="mainPage" data-testid="main">
-        <input
-          type="text"
-          onChange={(event) => {
-            this.inputText(event.target.value);
-          }}
-          value={this.state.text}
-          className="mainPage__input"
-        />
-        <button className="mainPage__btn">Search</button>
-        <div className="mainPage__conteiner">
-          {products.map((item: IProduct) => (
-            <Card key={item.id} data={item} />
-          ))}
-        </div>
+  return (
+    <div className="mainPage" data-testid="main">
+      <input
+        type="text"
+        onChange={(event) => {
+          setText(() => event.target.value);
+        }}
+        value={text !== null ? text : undefined}
+        placeholder="Search..."
+        className="mainPage__input"
+      />
+      <button className="mainPage__btn">Search</button>
+      <div className="mainPage__conteiner">
+        {products.map((item: IProduct) => (
+          <Card key={item.id} data={item} />
+        ))}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default MainPage;
