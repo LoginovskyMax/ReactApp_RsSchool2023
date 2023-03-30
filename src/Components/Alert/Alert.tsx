@@ -6,7 +6,7 @@ interface IProps {
 }
 
 const Alert = ({ text, show }: IProps) => {
-  return show && <p className={styles.text}>{text}</p>;
+  return <div>{show && <p className={styles.text}>{text}</p>}</div>;
 };
 
 export default Alert;
