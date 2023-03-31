@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
 import styles from './FileInput.module.scss';
 import svg from '../../assets/download.png';
+import {
+  FieldValues,
+  UseFormRegister,
+  // useForm, // don't need this import
+} from "react-hook-form";
 
 interface IProps {
-  image: React.RefObject<HTMLInputElement>;
+  image?: React.RefObject<HTMLInputElement>;
   deleteError: () => void;
   reset: boolean;
+  register?:UseFormRegister<FieldValues>
 }
 
 const FileInput = ({ image, deleteError, reset }: IProps) => {
@@ -13,11 +19,15 @@ const FileInput = ({ image, deleteError, reset }: IProps) => {
   const [showImg, setShowImg] = useState(false);
 
   const setImg = () => {
-    if (image.current !== null && image.current.files !== null) {
-      setPath(URL.createObjectURL(image.current.files[0]));
+    if(image){
+      if (image.current !== null && image.current.files !== null) {
+        setPath(URL.createObjectURL(image.current.files[0]));
+      }
+      deleteError();
+      setShowImg(true);
     }
-    deleteError();
-    setShowImg(true);
+
+   
   };
   useEffect(() => {
     setShowImg(false);
