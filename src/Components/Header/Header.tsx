@@ -31,6 +31,7 @@ const Header = ({ is404 }: IProps) => {
           onClick={() => {
             setLocation('Main page');
           }}
+          data-testid="link-main"
         >
           Main
         </NavLink>{' '}
@@ -40,6 +41,7 @@ const Header = ({ is404 }: IProps) => {
           onClick={() => {
             setLocation('About');
           }}
+          data-testid="link-about"
         >
           About
         </NavLink>
@@ -49,6 +51,7 @@ const Header = ({ is404 }: IProps) => {
           onClick={() => {
             setLocation('Add - Card');
           }}
+          data-testid="link-add"
         >
           Add card
         </NavLink>

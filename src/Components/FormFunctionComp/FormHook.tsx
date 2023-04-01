@@ -62,11 +62,11 @@ export const FormHook = ({ addCard }: IProps) => {
     <div className={styles.wrapper}>
       <form className={styles.form} onSubmit={handleSubmit((data) => onsubmit(data))}>
         <p className={styles.form__title}>Title</p>
-        <input {...register('title', { required: true })} />
+        <input {...register('title', { required: true })} data-testid="title"/>
         <Alert text="Add title" show={errors.title} />
 
         <p className={styles.form__title}>Brand</p>
-        <input {...register('brand', { required: true })} />
+        <input {...register('brand', { required: true })} data-testid="brand"/>
         <Alert text="Add brand" show={errors.brand} />
 
         <p className={styles.form__title}>Description</p>
