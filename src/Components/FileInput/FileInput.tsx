@@ -1,34 +1,22 @@
 import { useEffect, useState } from 'react';
 import styles from './FileInput.module.scss';
 import svg from '../../assets/download.png';
-import {
-  FieldValues,
-  UseFormRegister,
-  // useForm, // don't need this import
-} from "react-hook-form";
+import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 interface IProps {
-  image?: React.RefObject<HTMLInputElement>;
-  deleteError: () => void;
+  register: UseFormRegister<FieldValues>;
   reset: boolean;
-  register?:UseFormRegister<FieldValues>
 }
 
-const FileInput = ({ image, deleteError, reset }: IProps) => {
+const FileInput = ({ register, reset }: IProps) => {
   const [path, setPath] = useState('');
   const [showImg, setShowImg] = useState(false);
 
-  const setImg = () => {
-    if(image){
-      if (image.current !== null && image.current.files !== null) {
-        setPath(URL.createObjectURL(image.current.files[0]));
-      }
-      deleteError();
-      setShowImg(true);
-    }
-
-   
+  const setImg = (e: EventTarget & HTMLInputElement) => {
+    if (e.files !== null) setPath(URL.createObjectURL(e.files[0]));
+    setShowImg(true);
   };
+
   useEffect(() => {
     setShowImg(false);
   }, [reset]);
@@ -36,13 +24,12 @@ const FileInput = ({ image, deleteError, reset }: IProps) => {
   return (
     <div className={styles.input__wrapper}>
       <input
-        name="file"
+        {...register('file', { required: true })}
         type="file"
         id="input__file"
         className={styles.input__file}
-        ref={image}
         accept="image/*"
-        onInput={setImg}
+        onInput={(e) => setImg(e.currentTarget)}
       />
       <label htmlFor="input__file" className={styles.input__file_button}>
         <span className={styles['input__file-icon-wrapper']}>

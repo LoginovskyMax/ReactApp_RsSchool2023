@@ -38,7 +38,7 @@ const MainPage = () => {
         onChange={(event) => {
           setText(() => event.target.value);
         }}
-        value={text !== null ? text : undefined}
+        value={text !== null ? text : ''}
         placeholder="Search..."
         className="mainPage__input"
       />

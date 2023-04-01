@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, act } from '@testing-library/react';
-import { Route, Router, Routes } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import Card from './Components/Card/Card';
 import NotFound from './Pages/404/NotFound';
@@ -14,8 +13,8 @@ import products from './assets/products.json';
 
 describe('Expected components in DOM', () => {
   it('not found created', () => {
-    render(<NotFound is404={(yes=false)=>{}}/>)
-  
+    render(<NotFound is404={(yes = false) => {}} />);
+
     expect(screen.getByText(/Back/i)).toBeInTheDocument();
   });
   it('card created', () => {
