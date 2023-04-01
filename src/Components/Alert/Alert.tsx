@@ -3,7 +3,7 @@ import { FieldError, Merge, FieldErrorsImpl } from 'react-hook-form';
 
 interface IProps {
   text: string;
-  show: boolean | undefined | FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
+  show: boolean | undefined | FieldError | Merge<FieldError, FieldErrorsImpl>;
 }
 
 const Alert = ({ text, show }: IProps) => {

@@ -31,7 +31,11 @@ const Card = ({ data }: IProps) => {
       >
         Description
       </p>
-      {visible && <p className={styles.card__description}>{data.description}</p>}
+      {visible && (
+        <p className={styles.card__description} data-testid="description">
+          {data.description}
+        </p>
+      )}
       <p>
         <strong>Price: </strong>
         {data.price} $

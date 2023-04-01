@@ -41,6 +41,7 @@ const MainPage = () => {
         value={text !== null ? text : ''}
         placeholder="Search..."
         className="mainPage__input"
+        data-testid="main-input"
       />
       <button className="mainPage__btn">Search</button>
       <div className="mainPage__conteiner">

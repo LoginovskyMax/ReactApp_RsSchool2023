@@ -29,6 +29,7 @@ const FileInput = ({ register, reset }: IProps) => {
         id="input__file"
         className={styles.input__file}
         accept="image/*"
+        data-testid="input-file"
         onInput={(e) => setImg(e.currentTarget)}
       />
       <label htmlFor="input__file" className={styles.input__file_button}>
