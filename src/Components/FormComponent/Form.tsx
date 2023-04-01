@@ -3,7 +3,6 @@ import styles from './Form.module.scss';
 import Card from '../Card/Card';
 import { IProduct } from '../../Pages/MainPage/MainPage';
 import Alert from '../Alert/Alert';
-import FileInput from '../FileInput/FileInput';
 
 const categoryes = [
   'smartphones',
@@ -222,13 +221,6 @@ export default class Form extends Component<object, IState> {
             Add 15% discount
             <input type="checkbox" ref={this.discount} data-testid="check" />
           </label>
-
-          <FileInput
-            image={this.image}
-            deleteError={() => this.deleteError(4)}
-            reset={this.state.showModal}
-          />
-          <Alert text="Add image!" show={this.state.errors[4]} />
 
           <fieldset ref={this.stock} className={styles.form__field}>
             <p className={styles.form__title}>Stock</p>
