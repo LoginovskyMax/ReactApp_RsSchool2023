@@ -27,8 +27,6 @@ beforeEach(() => {
   vi.spyOn(router, 'useNavigate').mockImplementation(() => mockNavigate);
 });
 
-
-
 describe('Expected components in DOM', () => {
   window.URL.createObjectURL = vi.fn();
   it('not found created', () => {
@@ -78,22 +76,23 @@ describe('Expected components in DOM', () => {
       await userEvent.upload(input, fakeFile);
       if (input.files) expect(input.files[0]).toStrictEqual(fakeFile);
     });
-  })
+  });
 
   it('Header created', async () => {
-      render(
+    render(
       <router.MemoryRouter initialEntries={['/']}>
-        <Header is404={false}/>
-      </router.MemoryRouter>,);
-      expect(screen.getAllByRole('link')).toHaveLength(3);
-      await act(async () => {
-        await userEvent.click(screen.getByTestId('link-main'));
-        expect(screen.getByText('Main page')).toBeInTheDocument();
-        await userEvent.click(screen.getByTestId('link-about'));
-        expect(screen.getByText('About')).toBeInTheDocument();
-        await userEvent.click(screen.getByTestId('link-add'));
-        expect(screen.getByText('Add card')).toBeInTheDocument();
-      });
+        <Header is404={false} />
+      </router.MemoryRouter>
+    );
+    expect(screen.getAllByRole('link')).toHaveLength(3);
+    await act(async () => {
+      await userEvent.click(screen.getByTestId('link-main'));
+      expect(screen.getByText('Main page')).toBeInTheDocument();
+      await userEvent.click(screen.getByTestId('link-about'));
+      expect(screen.getByText('About')).toBeInTheDocument();
+      await userEvent.click(screen.getByTestId('link-add'));
+      expect(screen.getByText('Add card')).toBeInTheDocument();
+    });
   });
 
   it('Alert created', () => {
@@ -148,36 +147,34 @@ describe('Expected FormHook in DOM', () => {
       expect(screen.getByText('Create')).toBeInTheDocument();
     });
   });
-
 });
 
 describe('routing tests', () => {
   it('bad route', () => {
-    const badRoute = '/some/bad/route'
+    const badRoute = '/some/bad/route';
     render(
       <router.MemoryRouter initialEntries={[badRoute]}>
         <App />
-      </router.MemoryRouter>,
-    )
+      </router.MemoryRouter>
+    );
     expect(screen.getByText(/Back/i)).toBeInTheDocument();
   });
   it('bad route', () => {
-    const addCard = '/add'
+    const addCard = '/add';
     render(
       <router.MemoryRouter initialEntries={[addCard]}>
         <App />
-      </router.MemoryRouter>,
-    )
+      </router.MemoryRouter>
+    );
     expect(screen.getByText(/You can create a new card here/i)).toBeInTheDocument();
   });
   it('about route', () => {
-    const route = '/about'
+    const route = '/about';
     render(
       <router.MemoryRouter initialEntries={[route]}>
         <App />
-      </router.MemoryRouter>,
-    )
+      </router.MemoryRouter>
+    );
     expect(screen.getByText(/RS School/i)).toBeInTheDocument();
   });
 });
-
