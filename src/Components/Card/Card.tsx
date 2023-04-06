@@ -4,13 +4,14 @@ import { IProduct } from '../../Pages/MainPage/MainPage';
 
 interface IProps {
   data: IProduct;
+  showModal: (id: number) => void;
 }
 
-const Card = ({ data }: IProps) => {
+const Card = ({ data, showModal }: IProps) => {
   const [visible, setVisible] = useState(false);
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={() => showModal(data.id)}>
       <div style={{ backgroundImage: `url('${data.thumbnail}')` }} className={styles.card__image} />
       <p>
         <strong>Name :</strong>

@@ -1,4 +1,5 @@
 import Card from '../../Components/Card/Card';
+import Modal from '../../Components/Modal/Modal';
 import products from '../../assets/products.json';
 import { useEffect, useState } from 'react';
 
@@ -18,6 +19,13 @@ export interface IProduct {
 
 const MainPage = () => {
   const [text, setText] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalID, setModalID] = useState(0);
+
+  const showModal = (id: number) => {
+    setIsModalOpen(true);
+    setModalID(id);
+  };
 
   useEffect(() => {
     if (text !== null) {
@@ -46,9 +54,10 @@ const MainPage = () => {
       <button className="mainPage__btn">Search</button>
       <div className="mainPage__conteiner">
         {products.map((item: IProduct) => (
-          <Card key={item.id} data={item} />
+          <Card key={item.id} data={item} showModal={showModal} />
         ))}
       </div>
+      {isModalOpen && <Modal setModalClosed={() => setIsModalOpen(false)} id={modalID}></Modal>}
     </div>
   );
 };
