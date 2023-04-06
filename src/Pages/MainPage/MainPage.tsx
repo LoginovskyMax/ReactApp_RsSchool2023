@@ -1,3 +1,4 @@
+import { p } from 'vitest/dist/types-7cd96283';
 import Card from '../../Components/Card/Card';
 import Loading from '../../Components/Loading/Loading';
 import Modal from '../../Components/Modal/Modal';
@@ -53,7 +54,10 @@ const MainPage = () => {
     if (text !== null) {
       localStorage.setItem('data', JSON.stringify(text));
     }
-  }, [text]);
+    if(errorResponse){
+      setIsLoad(false)
+    }
+  }, [text, errorResponse]);
 
   useEffect(() => {
     if (localStorage.getItem('data')) {
@@ -82,6 +86,7 @@ const MainPage = () => {
       </div>
       {isModalOpen && <Modal setModalClosed={() => setIsModalOpen(false)} id={modalID}/>}
       {isLoad && <Loading status={isLoad} />}
+      {errorResponse && <p>Some server problems :-(</p>}
     </div>
   );
 };
