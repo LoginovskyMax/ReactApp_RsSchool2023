@@ -1,31 +1,15 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, ReactElement} from 'react';
 import ReactDOM from 'react-dom';
 
 import style from './Modal.module.scss';
 
 interface ModalProps {
   setModalClosed: () => void;
-  id: number;
+  children:ReactElement
 }
 
-const Modal: FC<ModalProps> = ({ setModalClosed, id }) => {
-  const [cardData, setCardData] = useState({});
-
-  const getCardData = () => {
-    fetch(``, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setCardData(data));
-  };
-
-  useEffect(() => {
-    getCardData();
-  }, []);
-
+const Modal: FC<ModalProps> = ({ setModalClosed, children}) => {
+ 
   return ReactDOM.createPortal(
     <div className={style['modal-background']}>
       <div className={style['modal-wrapper']} onClick={setModalClosed} />
@@ -36,7 +20,9 @@ const Modal: FC<ModalProps> = ({ setModalClosed, id }) => {
             X
           </div>
         </div>
-        <div className={style.modal__content}>Hi</div>
+        <div className={style.modal__content}>
+          {children}
+        </div>
       </div>
     </div>,
     document.body

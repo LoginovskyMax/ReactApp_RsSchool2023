@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './Card.module.scss';
-import { IProduct } from '../../Pages/MainPage/MainPage';
+import { IProduct } from '../../Pages/responseData';
 
 interface IProps {
   data: IProduct;

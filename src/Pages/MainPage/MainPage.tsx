@@ -3,27 +3,15 @@ import Card from '../../Components/Card/Card';
 import Loading from '../../Components/Loading/Loading';
 import Modal from '../../Components/Modal/Modal';
 import { useEffect, useState } from 'react';
-
-export interface IProduct {
-  brand: string;
-  category: string;
-  description: string;
-  discountPercentage: number;
-  id: number;
-  images: string[];
-  price: number;
-  rating: number;
-  stock: number;
-  thumbnail: string;
-  title: string;
-}
+import { IProduct, IResponse} from '../responseData';
+import { DetailedCard } from '../../Components/DetailedCard/DetailedCard';
 
 const MainPage = () => {
   const [text, setText] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoad , setIsLoad] = useState(false)
   const [modalID, setModalID] = useState(0);
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState<IProduct[]>([])
   const [errorResponse, setErrorResponse] = useState(false)
 
   const showModal = (id: number) => {
@@ -33,15 +21,16 @@ const MainPage = () => {
 
   const getCardsData = () => {
     setIsLoad(true)
-    fetch(`https://dummy.com`, {
+    fetch(`https://dummyjson.com/products`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       }
     })
-      .then((response) => response.json())
+      .then<IResponse>((response) => response.json())
       .then((data) => {
-        setProducts(data)
+        console.log(data);
+        setProducts(data.products)
         setIsLoad(false)
       })
       .catch(error=> {
@@ -84,7 +73,7 @@ const MainPage = () => {
           <Card key={item.id} data={item} showModal={showModal} />
         ))}
       </div>
-      {isModalOpen && <Modal setModalClosed={() => setIsModalOpen(false)} id={modalID}/>}
+      {isModalOpen && <Modal setModalClosed={() => setIsModalOpen(false)}><DetailedCard id={modalID}/></Modal>}
       {isLoad && <Loading status={isLoad} />}
       {errorResponse && <p>Some server problems :-(</p>}
     </div>
