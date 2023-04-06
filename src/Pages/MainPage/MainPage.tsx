@@ -1,6 +1,6 @@
 import Card from '../../Components/Card/Card';
+import Loading from '../../Components/Loading/Loading';
 import Modal from '../../Components/Modal/Modal';
-import products from '../../assets/products.json';
 import { useEffect, useState } from 'react';
 
 export interface IProduct {
@@ -20,11 +20,33 @@ export interface IProduct {
 const MainPage = () => {
   const [text, setText] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoad , setIsLoad] = useState(false)
   const [modalID, setModalID] = useState(0);
+  const [products, setProducts] = useState([])
+  const [errorResponse, setErrorResponse] = useState(false)
 
   const showModal = (id: number) => {
     setIsModalOpen(true);
     setModalID(id);
+  };
+
+  const getCardsData = () => {
+    setIsLoad(true)
+    fetch(`https://dummy.com`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setProducts(data)
+        setIsLoad(false)
+      })
+      .catch(error=> {
+        setErrorResponse(true)
+        console.log(error);
+      })
   };
 
   useEffect(() => {
@@ -37,6 +59,7 @@ const MainPage = () => {
     if (localStorage.getItem('data')) {
       setText(JSON.parse(localStorage.getItem('data') as string));
     }
+    getCardsData()
   }, []);
 
   return (
@@ -57,7 +80,8 @@ const MainPage = () => {
           <Card key={item.id} data={item} showModal={showModal} />
         ))}
       </div>
-      {isModalOpen && <Modal setModalClosed={() => setIsModalOpen(false)} id={modalID}></Modal>}
+      {isModalOpen && <Modal setModalClosed={() => setIsModalOpen(false)} id={modalID}/>}
+      {isLoad && <Loading status={isLoad} />}
     </div>
   );
 };
