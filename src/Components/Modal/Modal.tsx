@@ -1,15 +1,14 @@
-import { FC, ReactElement} from 'react';
+import { FC, ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 
 import style from './Modal.module.scss';
 
 interface ModalProps {
   setModalClosed: () => void;
-  children:ReactElement
+  children: ReactElement;
 }
 
-const Modal: FC<ModalProps> = ({ setModalClosed, children}) => {
- 
+const Modal: FC<ModalProps> = ({ setModalClosed, children }) => {
   return ReactDOM.createPortal(
     <div className={style['modal-background']}>
       <div className={style['modal-wrapper']} onClick={setModalClosed} />
@@ -20,9 +19,7 @@ const Modal: FC<ModalProps> = ({ setModalClosed, children}) => {
             X
           </div>
         </div>
-        <div className={style.modal__content}>
-          {children}
-        </div>
+        <div className={style.modal__content}>{children}</div>
       </div>
     </div>,
     document.body
