@@ -7,12 +7,11 @@ interface IProps {
 }
 
 export const SearchBar = ({ setText, text, getCardsData }: IProps) => {
-
-  const handleKey = (key:string)=>{
-    if(key === 'Enter'){
-      getCardsData(text)
+  const handleKey = (key: string) => {
+    if (key === 'Enter') {
+      getCardsData(text);
     }
-  }
+  };
   return (
     <div className={styles.main}>
       <input
@@ -20,8 +19,8 @@ export const SearchBar = ({ setText, text, getCardsData }: IProps) => {
         onChange={(event) => {
           setText(() => event.target.value);
         }}
-        onKeyDown={(e)=>handleKey(e.key)}
-        value={text !== null ? text : ''}
+        onKeyDown={(e) => handleKey(e.key)}
+        value={text !== null && text !== undefined ? text : ''}
         placeholder="Search..."
         className={styles.main__input}
         data-testid="main-input"

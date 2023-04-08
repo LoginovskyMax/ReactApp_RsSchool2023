@@ -9,7 +9,7 @@ interface IProps {
 
 export const ResultList = ({ products, showModal }: IProps) => {
   return (
-    <div className={styles.main}>
+    <div className={styles.main} data-testid="resultList">
       {products.map((item: IProduct) => (
         <Card key={item.id} data={item} showModal={showModal} />
       ))}

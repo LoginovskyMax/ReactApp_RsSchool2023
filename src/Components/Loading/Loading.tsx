@@ -7,7 +7,7 @@ interface IProps {
 
 const Loading: FC<IProps> = ({ status }) => {
   return (
-    <div className={styles[`loading${status ? '' : 'loading_hide'}`]} data-testid='loading'>
+    <div className={styles[`loading${status ? '' : 'loading_hide'}`]} data-testid="loading">
       <div className={styles['lds-ring']}>
         <div />
         <div />

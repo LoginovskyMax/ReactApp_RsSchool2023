@@ -35,7 +35,6 @@ const MainPage = () => {
     })
       .then<IResponse>((response) => response.json())
       .then((data) => {
-        console.log(data);
         setProducts(data.products);
         setIsLoad(false);
       })
@@ -53,7 +52,6 @@ const MainPage = () => {
       }
     };
   });
-
 
   useEffect(() => {
     if (localStorage.getItem('data')) {

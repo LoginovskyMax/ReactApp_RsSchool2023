@@ -70,11 +70,12 @@ export const DetailedCard = ({ id }: IProps) => {
   }, []);
 
   return (
-    <div className={styles.card} data-testid = 'detailedPage'>
+    <div className={styles.card} data-testid="detailedPage">
       <div className={styles.card__img_block}>
         <div
           style={{ backgroundImage: `url('${imageURL}')` }}
           className={hide ? styles.hide : styles.card__image}
+          data-testid="imageDiv"
         />
         <div className={styles.card__btns_block}>
           <button type="button" className={styles.card__btn} onClick={showPrev}>

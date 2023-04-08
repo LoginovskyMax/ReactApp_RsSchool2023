@@ -16,7 +16,6 @@ import { FormHook } from './Components/FormFunctionComp/FormHook';
 import { useForm } from 'react-hook-form';
 import App from './App';
 import { DetailedCard } from './Components/DetailedCard/DetailedCard';
-import { IResponse } from './Pages/responseData';
 import Modal from './Components/Modal/Modal';
 import { ResultList } from './Components/ResultList/ResultList';
 import Loading from './Components/Loading/Loading';
@@ -28,19 +27,16 @@ const MockComp = () => {
 
 const mockNavigate = vi.fn();
 
-global.fetch = vi.fn()
-
-const fetchResponse = (data:IResponse)=>{
-   return {json: () => new Promise((resolve)=>resolve(data))}
-}
-
 beforeEach(() => {
   vi.spyOn(router, 'useNavigate').mockImplementation(() => mockNavigate);
 });
 
 describe('Expected components in DOM', () => {
   window.URL.createObjectURL = vi.fn();
-  let mockFunc = (id:number)=>{ return }
+  const mockFunc = (id: number) => {
+    id / 2;
+    return;
+  };
 
   it('not found created', () => {
     render(<NotFound is404={() => {}} />);
@@ -62,17 +58,19 @@ describe('Expected components in DOM', () => {
   });
 
   it('MainPage created', async () => {
+    localStorage.setItem('data', JSON.stringify(''));
     render(<MainPage></MainPage>);
     expect(screen.getByTestId('main')).toBeInTheDocument();
+    expect(screen.getByTestId('resultList')).toBeInTheDocument();
+    const card = await screen.findByTestId('clickedCard');
+    expect(card).toBeInTheDocument();
 
     await act(async () => {
       await userEvent.type(screen.getByTestId('main-input'), 'Hello');
       expect(screen.getByTestId('main-input')).toHaveValue('Hello');
-
-      await userEvent.click(screen.getByTestId('clickedCard'));
-      expect(screen.getByText('Detailed information')).toBeInTheDocument();
+      await userEvent.click(card);
+      expect(await screen.findByText('iPhone 9')).toBeInTheDocument();
     });
-
   });
 
   it('About created', () => {
@@ -123,28 +121,35 @@ describe('Expected components in DOM', () => {
   });
 
   it('Modal created', () => {
-    render(<Modal setModalClosed={()=>{}}>
-      <ResultList products={products} showModal={mockFunc}></ResultList>
-      </Modal>);
+    render(
+      <Modal setModalClosed={() => {}}>
+        <ResultList products={products} showModal={mockFunc}></ResultList>
+      </Modal>
+    );
     expect(screen.getByText('Detailed information')).toBeInTheDocument();
   });
 
   it('Loading created', () => {
-    render(<Loading status={true}/>);
+    render(<Loading status={true} />);
     expect(screen.getByTestId('loading')).toBeInTheDocument();
   });
 
   it('Loading have right class', () => {
-    render(<Loading status={false}/>);
-    expect(screen.getByTestId('loading')).toHaveClass('_loadingloading_hide_b532a7')
+    render(<Loading status={false} />);
+    expect(screen.getByTestId('loading')).toHaveClass('_loadingloading_hide_b532a7');
   });
 
-  // it('Detailed card created', () => {
-  //   render(<DetailedCard id={5} />);
-  //   expect(screen.getByTestId('detailedPage')).toBeInTheDocument();
-  // });
-
-
+  it('Detailed card created', async () => {
+    render(<DetailedCard id={1} />);
+    expect(screen.getByTestId('detailedPage')).toBeInTheDocument();
+    expect(await screen.findByText('iPhone 9')).toBeInTheDocument();
+    await act(async () => {
+      await userEvent.click(screen.getByText('Next'));
+      expect(screen.getByTestId('imageDiv')).toBeInTheDocument();
+      await userEvent.click(screen.getByText('Prev'));
+      expect(screen.getByTestId('imageDiv')).toHaveClass('_card__image_a18fb6');
+    });
+  });
 });
 
 describe('Expected form in DOM', () => {
@@ -162,7 +167,7 @@ describe('Expected form in DOM', () => {
     await act(async () => {
       await userEvent.click(screen.getByTestId('check'));
       expect(screen.getByTestId('check')).toBeChecked();
-      
+
       await userEvent.type(screen.getByTestId('area'), 'Hello');
       expect(screen.getByTestId('area')).toHaveValue('Hello');
 
@@ -204,7 +209,6 @@ describe('Expected FormHook in DOM', () => {
 });
 
 describe('routing tests', () => {
-
   it('bad route', () => {
     const badRoute = '/some/bad/route';
     render(
