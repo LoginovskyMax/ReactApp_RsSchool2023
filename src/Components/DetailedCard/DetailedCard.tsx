@@ -70,7 +70,7 @@ export const DetailedCard = ({ id }: IProps) => {
   }, []);
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card} data-testid = 'detailedPage'>
       <div className={styles.card__img_block}>
         <div
           style={{ backgroundImage: `url('${imageURL}')` }}
