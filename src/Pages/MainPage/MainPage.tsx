@@ -1,10 +1,11 @@
 import Card from '../../Components/Card/Card';
 import Loading from '../../Components/Loading/Loading';
 import Modal from '../../Components/Modal/Modal';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IProduct, IResponse } from '../responseData';
 import { DetailedCard } from '../../Components/DetailedCard/DetailedCard';
 import { SearchBar } from '../../Components/SearchBar/SearchBar';
+import { ResultList } from '../../Components/ResultList/ResultList';
 
 const HOST = 'https://dummyjson.com/products';
 
@@ -46,13 +47,18 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    if (text !== null && text !== undefined) {
-      localStorage.setItem('data', JSON.stringify(text));
+    return ()=>{
+      if (text !== null && text !== undefined) {
+        localStorage.setItem('data', JSON.stringify(text));
+      }
     }
+  });
+
+  useEffect(()=>{
     if (errorResponse) {
       setIsLoad(false);
     }
-  }, [text, errorResponse]);
+  },[errorResponse])
 
   useEffect(() => {
     if (localStorage.getItem('data')) {
@@ -65,11 +71,7 @@ const MainPage = () => {
   return (
     <div className="mainPage" data-testid="main">
       <SearchBar setText={setText} text={text} getCardsData={getCardsData}></SearchBar>
-      <div className="mainPage__conteiner">
-        {products.map((item: IProduct) => (
-          <Card key={item.id} data={item} showModal={showModal} />
-        ))}
-      </div>
+      <ResultList products={products} showModal={showModal}></ResultList>
       {isModalOpen && (
         <Modal setModalClosed={() => setIsModalOpen(false)}>
           <DetailedCard id={modalID} />
