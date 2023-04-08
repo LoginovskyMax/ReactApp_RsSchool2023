@@ -1,54 +1,77 @@
-import Card from '../../Components/Card/Card';
-import products from '../../assets/products.json';
+import Loading from '../../Components/Loading/Loading';
+import Modal from '../../Components/Modal/Modal';
 import { useEffect, useState } from 'react';
+import { IProduct, IResponse } from '../responseData';
+import { DetailedCard } from '../../Components/DetailedCard/DetailedCard';
+import { SearchBar } from '../../Components/SearchBar/SearchBar';
+import { ResultList } from '../../Components/ResultList/ResultList';
 
-export interface IProduct {
-  brand: string;
-  category: string;
-  description: string;
-  discountPercentage: number;
-  id: number;
-  images: string[];
-  price: number;
-  rating: number;
-  stock: number;
-  thumbnail: string;
-  title: string;
-}
+const HOST = 'https://dummyjson.com/products';
 
 const MainPage = () => {
-  const [text, setText] = useState<string | null>(null);
+  const [text, setText] = useState<string | null | undefined>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoad, setIsLoad] = useState(false);
+  const [modalID, setModalID] = useState(0);
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [errorResponse, setErrorResponse] = useState(false);
+
+  const showModal = (id: number) => {
+    setIsModalOpen(true);
+    setModalID(id);
+  };
+
+  const getCardsData = (text?: string | null) => {
+    let url = HOST;
+    if (text) {
+      url = `${HOST}/search?q=${text.toLowerCase()}`;
+    }
+    setIsLoad(true);
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then<IResponse>((response) => response.json())
+      .then((data) => {
+        setProducts(data.products);
+        setIsLoad(false);
+      })
+      .catch((error) => {
+        setErrorResponse(true);
+        console.log(error);
+        setIsLoad(false);
+      });
+  };
 
   useEffect(() => {
-    if (text !== null) {
-      localStorage.setItem('data', JSON.stringify(text));
-    }
-  }, [text]);
+    return () => {
+      if (text !== null && text !== undefined) {
+        localStorage.setItem('data', JSON.stringify(text));
+      }
+    };
+  });
 
   useEffect(() => {
     if (localStorage.getItem('data')) {
-      setText(JSON.parse(localStorage.getItem('data') as string));
+      const lsText = JSON.parse(localStorage.getItem('data') as string);
+      setText(lsText);
+      getCardsData(lsText);
     }
   }, []);
 
   return (
     <div className="mainPage" data-testid="main">
-      <input
-        type="text"
-        onChange={(event) => {
-          setText(() => event.target.value);
-        }}
-        value={text !== null ? text : ''}
-        placeholder="Search..."
-        className="mainPage__input"
-        data-testid="main-input"
-      />
-      <button className="mainPage__btn">Search</button>
-      <div className="mainPage__conteiner">
-        {products.map((item: IProduct) => (
-          <Card key={item.id} data={item} />
-        ))}
-      </div>
+      <SearchBar setText={setText} text={text} getCardsData={getCardsData}></SearchBar>
+      <ResultList products={products} showModal={showModal}></ResultList>
+      {isModalOpen && (
+        <Modal setModalClosed={() => setIsModalOpen(false)}>
+          <DetailedCard id={modalID} />
+        </Modal>
+      )}
+      {isLoad && <Loading status={isLoad} />}
+      {errorResponse && <p>Some server problems :-(</p>}
     </div>
   );
 };

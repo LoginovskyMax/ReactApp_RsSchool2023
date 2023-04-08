@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Card from '../../Components/Card/Card';
 import { FormHook } from '../../Components/FormFunctionComp/FormHook';
-import { IProduct } from '../MainPage/MainPage';
+import { IProduct } from '../responseData';
 
 const AddCard = () => {
   const [cards, setCards] = useState<IProduct[]>([]);
@@ -18,7 +18,7 @@ const AddCard = () => {
       <FormHook addCard={addCard} />
       <div className="mainPage__conteiner">
         {cards.map((data) => (
-          <Card data={data} key={data.id} />
+          <Card data={data} key={data.id} showModal={() => {}} />
         ))}
       </div>
     </div>
