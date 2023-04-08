@@ -3,7 +3,7 @@ import { useForm, FieldValues } from 'react-hook-form';
 import FileInput from '../FileInput/FileInput';
 import { useEffect, useState } from 'react';
 import Alert from '../Alert/Alert';
-import { IProduct } from '../../Pages/MainPage/MainPage';
+import { IProduct } from '../../Pages/responseData'
 
 const categoryes = [
   'smartphones',
