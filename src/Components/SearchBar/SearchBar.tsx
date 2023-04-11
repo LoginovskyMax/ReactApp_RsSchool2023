@@ -1,12 +1,15 @@
 import styles from './SearchBar.module.scss';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { setText } from '../../redux/searchs';
 
 interface IProps {
-  setText: React.Dispatch<React.SetStateAction<string | undefined | null>>;
-  text?: string | null;
   getCardsData: (text?: string | null) => void;
 }
 
-export const SearchBar = ({ setText, text, getCardsData }: IProps) => {
+export const SearchBar = ({getCardsData }: IProps) => {
+  let text = useAppSelector(state=>state.search.searchText)
+  const dispatch = useAppDispatch();
+
   const handleKey = (key: string) => {
     if (key === 'Enter') {
       getCardsData(text);
@@ -17,7 +20,7 @@ export const SearchBar = ({ setText, text, getCardsData }: IProps) => {
       <input
         type="text"
         onChange={(event) => {
-          setText(() => event.target.value);
+          dispatch(setText(event.target.value));
         }}
         onKeyDown={(e) => handleKey(e.key)}
         value={text !== null && text !== undefined ? text : ''}

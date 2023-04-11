@@ -5,16 +5,17 @@ import { IProduct, IResponse } from '../responseData';
 import { DetailedCard } from '../../Components/DetailedCard/DetailedCard';
 import { SearchBar } from '../../Components/SearchBar/SearchBar';
 import { ResultList } from '../../Components/ResultList/ResultList';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
 const HOST = 'https://dummyjson.com/products';
 
 const MainPage = () => {
-  const [text, setText] = useState<string | null | undefined>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
   const [modalID, setModalID] = useState(0);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [errorResponse, setErrorResponse] = useState(false);
+  let text = useAppSelector(state=>state.search.searchText)
 
   const showModal = (id: number) => {
     setIsModalOpen(true);
@@ -45,25 +46,14 @@ const MainPage = () => {
       });
   };
 
-  useEffect(() => {
-    return () => {
-      if (text !== null && text !== undefined) {
-        localStorage.setItem('data', JSON.stringify(text));
-      }
-    };
-  });
 
   useEffect(() => {
-    if (localStorage.getItem('data')) {
-      const lsText = JSON.parse(localStorage.getItem('data') as string);
-      setText(lsText);
-      getCardsData(lsText);
-    }
+    getCardsData(text);
   }, []);
 
   return (
     <div className="mainPage" data-testid="main">
-      <SearchBar setText={setText} text={text} getCardsData={getCardsData}></SearchBar>
+      <SearchBar getCardsData={getCardsData}></SearchBar>
       <ResultList products={products} showModal={showModal}></ResultList>
       {isModalOpen && (
         <Modal setModalClosed={() => setIsModalOpen(false)}>
