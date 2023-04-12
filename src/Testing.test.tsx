@@ -19,6 +19,8 @@ import { DetailedCard } from './Components/DetailedCard/DetailedCard';
 import Modal from './Components/Modal/Modal';
 import { ResultList } from './Components/ResultList/ResultList';
 import Loading from './Components/Loading/Loading';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 const MockComp = () => {
   const { register } = useForm();
@@ -59,7 +61,12 @@ describe('Expected components in DOM', () => {
 
   it('MainPage created', async () => {
     localStorage.setItem('data', JSON.stringify(''));
-    render(<MainPage></MainPage>);
+    render(
+      <Provider store={store}>
+        <MainPage></MainPage>
+      </Provider>
+    );
+
     expect(screen.getByTestId('main')).toBeInTheDocument();
     expect(screen.getByTestId('resultList')).toBeInTheDocument();
     const card = await screen.findByTestId('clickedCard');
@@ -79,7 +86,11 @@ describe('Expected components in DOM', () => {
   });
 
   it('AddCard created', () => {
-    render(<AddCard />);
+    render(
+      <Provider store={store}>
+        <AddCard />
+      </Provider>
+    );
     expect(screen.getByText('You can create a new card here')).toBeInTheDocument();
   });
 
@@ -140,12 +151,19 @@ describe('Expected components in DOM', () => {
   });
 
   it('Detailed card created', async () => {
-    render(<DetailedCard id={1} />);
+    render(
+      <Provider store={store}>
+        <DetailedCard id={1} />
+      </Provider>
+    );
+
     expect(screen.getByTestId('detailedPage')).toBeInTheDocument();
     expect(await screen.findByText('iPhone 9')).toBeInTheDocument();
+
     await act(async () => {
       await userEvent.click(screen.getByText('Next'));
       expect(screen.getByTestId('imageDiv')).toBeInTheDocument();
+
       await userEvent.click(screen.getByText('Prev'));
       expect(screen.getByTestId('imageDiv')).toHaveClass('_card__image_a18fb6');
     });
@@ -179,7 +197,11 @@ describe('Expected form in DOM', () => {
 
 describe('Expected FormHook in DOM', () => {
   it('FormHook created', async () => {
-    render(<FormHook addCard={() => {}} />);
+    render(
+      <Provider store={store}>
+        <FormHook />
+      </Provider>
+    );
     expect(screen.getByText('Title')).toBeInTheDocument();
     expect(screen.getByText('Brand')).toBeInTheDocument();
     expect(screen.getByText('Description')).toBeInTheDocument();
@@ -219,11 +241,13 @@ describe('routing tests', () => {
     expect(screen.getByText(/Back/i)).toBeInTheDocument();
   });
 
-  it('bad route', () => {
+  it('add route', () => {
     const addCard = '/add';
     render(
       <router.MemoryRouter initialEntries={[addCard]}>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </router.MemoryRouter>
     );
     expect(screen.getByText(/You can create a new card here/i)).toBeInTheDocument();
