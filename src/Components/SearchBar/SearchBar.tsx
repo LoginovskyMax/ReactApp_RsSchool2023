@@ -3,11 +3,11 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setText } from '../../redux/searchs';
 
 interface IProps {
-  getCardsData: (text?: string | null) => void;
+  getCardsData: (text?: string) => void;
 }
 
-export const SearchBar = ({getCardsData }: IProps) => {
-  let text = useAppSelector(state=>state.search.searchText)
+export const SearchBar = ({ getCardsData }: IProps) => {
+  const text = useAppSelector((state) => state.search.searchText);
   const dispatch = useAppDispatch();
 
   const handleKey = (key: string) => {

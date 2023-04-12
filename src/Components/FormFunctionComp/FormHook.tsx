@@ -28,7 +28,7 @@ export const FormHook = () => {
 
   const [showModal, setShowModal] = useState(false);
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const onsubmit = (data: FieldValues) => {
     const newCard = {
