@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './Form.module.scss';
 import Card from '../Card/Card';
-import { IProduct } from '../../Pages/responseData'
+import { IProduct } from '../../Pages/responseData';
 import Alert from '../Alert/Alert';
 
 const categoryes = [

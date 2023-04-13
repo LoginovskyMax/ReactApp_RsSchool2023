@@ -3,7 +3,8 @@ import { useForm, FieldValues } from 'react-hook-form';
 import FileInput from '../FileInput/FileInput';
 import { useEffect, useState } from 'react';
 import Alert from '../Alert/Alert';
-import { IProduct } from '../../Pages/responseData'
+import { useAppDispatch } from '../../redux/hooks';
+import { addCard } from '../../redux/createdCards';
 
 const categoryes = [
   'smartphones',
@@ -17,11 +18,7 @@ const categoryes = [
 ];
 const stocks = [10, 50, 100];
 
-interface IProps {
-  addCard: (newCard: IProduct) => void;
-}
-
-export const FormHook = ({ addCard }: IProps) => {
+export const FormHook = () => {
   const {
     register,
     handleSubmit,
@@ -30,6 +27,8 @@ export const FormHook = ({ addCard }: IProps) => {
   } = useForm();
 
   const [showModal, setShowModal] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const onsubmit = (data: FieldValues) => {
     const newCard = {
@@ -45,7 +44,7 @@ export const FormHook = ({ addCard }: IProps) => {
       images: data.discount,
       category: data.category,
     };
-    addCard(newCard);
+    dispatch(addCard(newCard));
     setShowModal(true);
     setTimeout(() => {
       setShowModal(false);

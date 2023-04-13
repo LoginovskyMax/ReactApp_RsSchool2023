@@ -1,77 +1,47 @@
 import Loading from '../../Components/Loading/Loading';
 import Modal from '../../Components/Modal/Modal';
 import { useEffect, useState } from 'react';
-import { IProduct, IResponse } from '../responseData';
 import { DetailedCard } from '../../Components/DetailedCard/DetailedCard';
 import { SearchBar } from '../../Components/SearchBar/SearchBar';
 import { ResultList } from '../../Components/ResultList/ResultList';
-
-const HOST = 'https://dummyjson.com/products';
+import { useAppSelector } from '../../redux/hooks';
+import { useGetCardsQuery } from '../../redux/createdCards';
 
 const MainPage = () => {
-  const [text, setText] = useState<string | null | undefined>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoad, setIsLoad] = useState(false);
   const [modalID, setModalID] = useState(0);
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [errorResponse, setErrorResponse] = useState(false);
+  const text = useAppSelector((state) => state.search.searchText);
+  const [searchText, setSearchText] = useState('');
+  const { data, isLoading, isError } = useGetCardsQuery(searchText, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const showModal = (id: number) => {
     setIsModalOpen(true);
     setModalID(id);
   };
 
-  const getCardsData = (text?: string | null) => {
-    let url = HOST;
-    if (text) {
-      url = `${HOST}/search?q=${text.toLowerCase()}`;
+  const getCardsData = (text?: string) => {
+    if (text !== undefined) {
+      setSearchText(text);
     }
-    setIsLoad(true);
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then<IResponse>((response) => response.json())
-      .then((data) => {
-        setProducts(data.products);
-        setIsLoad(false);
-      })
-      .catch((error) => {
-        setErrorResponse(true);
-        console.log(error);
-        setIsLoad(false);
-      });
   };
 
   useEffect(() => {
-    return () => {
-      if (text !== null && text !== undefined) {
-        localStorage.setItem('data', JSON.stringify(text));
-      }
-    };
-  });
-
-  useEffect(() => {
-    if (localStorage.getItem('data')) {
-      const lsText = JSON.parse(localStorage.getItem('data') as string);
-      setText(lsText);
-      getCardsData(lsText);
-    }
+    getCardsData(text);
   }, []);
 
   return (
     <div className="mainPage" data-testid="main">
-      <SearchBar setText={setText} text={text} getCardsData={getCardsData}></SearchBar>
-      <ResultList products={products} showModal={showModal}></ResultList>
+      <SearchBar getCardsData={getCardsData}></SearchBar>
+      <ResultList products={data?.products} showModal={showModal}></ResultList>
       {isModalOpen && (
         <Modal setModalClosed={() => setIsModalOpen(false)}>
           <DetailedCard id={modalID} />
         </Modal>
       )}
-      {isLoad && <Loading status={isLoad} />}
-      {errorResponse && <p>Some server problems :-(</p>}
+      {isLoading && <Loading status={isLoading} />}
+      {isError && <p>Some server problems :-(</p>}
     </div>
   );
 };

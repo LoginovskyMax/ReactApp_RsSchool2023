@@ -1,33 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
-import { IProduct } from '../../Pages/responseData';
 import styles from './DetailedCard.module.scss';
 import Loading from '../Loading/Loading';
+import { useGetCardByIDQuery } from '../../redux/createdCards';
 interface IProps {
   id: number;
 }
 
 export const DetailedCard = ({ id }: IProps) => {
   const [imageURL, setImageURL] = useState('');
-  const [data, setData] = useState<IProduct | undefined>();
   const [hide, setHide] = useState(false);
-  const [isLoad, setIsLoad] = useState(false);
   const canClick = useRef(true);
+  const { data, isLoading } = useGetCardByIDQuery(id);
 
-  const getCardData = () => {
-    setIsLoad(true);
-    fetch(`https://dummyjson.com/products/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then<IProduct>((response) => response.json())
-      .then((data) => {
-        setData(data);
-        setImageURL(data.images[0]);
-        setIsLoad(false);
-      });
-  };
+  useEffect(() => {
+    if (data) {
+      setImageURL(data.images[0]);
+    }
+  }, [data]);
 
   const showNext = () => {
     if (data && canClick.current) {
@@ -64,10 +53,6 @@ export const DetailedCard = ({ id }: IProps) => {
       }, 600);
     }
   };
-
-  useEffect(() => {
-    getCardData();
-  }, []);
 
   return (
     <div className={styles.card} data-testid="detailedPage">
@@ -119,7 +104,7 @@ export const DetailedCard = ({ id }: IProps) => {
           </p>
         </div>
       )}
-      {isLoad && <Loading status={isLoad} />}
+      {isLoading && <Loading status={isLoading} />}
     </div>
   );
 };
