@@ -5,17 +5,24 @@ import AddCard from './Pages/AddCard/AddCard';
 import NotFound from './Pages/404/NotFound';
 import './App.scss';
 import Header from './Components/Header/Header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const App = () => {
   const [isNotFound, setNotFound] = useState(false);
+  const [showing, setShowing] = useState(false);
+
   const is404 = (mount: boolean) => {
-    if (mount) {
-      setNotFound(true);
-    } else {
-      setNotFound(false);
-    }
+    setNotFound(mount);
   };
+
+  useEffect(() => {
+    setShowing(true);
+  }, []);
+
+  if (!showing) {
+    return null;
+  }
+
   return (
     <div className="App">
       <Header is404={isNotFound}></Header>
