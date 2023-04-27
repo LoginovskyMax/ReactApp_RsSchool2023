@@ -4,7 +4,7 @@ import coverage from '@cypress/code-coverage/task';
 export default defineConfig({
   env: {
     codeCoverage: {
-      exclude: 'cypress/**/*.*',
+      exclude: ['cypress/**/*.*', 'src/Components/FormComponent/*.*'],
     },
   },
   e2e: {

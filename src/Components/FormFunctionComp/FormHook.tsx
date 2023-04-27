@@ -77,7 +77,11 @@ export const FormHook = () => {
         ></textarea>
         <Alert text="Add description" show={errors.description} />
 
-        <select {...register('category', { required: true })} className={styles.form__select}>
+        <select
+          {...register('category', { required: true })}
+          className={styles.form__select}
+          data-testid="category"
+        >
           <option value="" key="0">
             Choose category
           </option>
@@ -95,6 +99,7 @@ export const FormHook = () => {
           placeholder="Add price"
           {...register('price', { required: true })}
           className={styles.form__text_inp}
+          data-testid="price"
         />
         <Alert text="Add price" show={errors.price} />
 
@@ -118,6 +123,7 @@ export const FormHook = () => {
                 {...register('stock', { required: true })}
                 name="stock"
                 value={val}
+                data-testid="radioInp"
               />
             </label>
           ))}
@@ -128,7 +134,7 @@ export const FormHook = () => {
         <Alert text="Add file" show={errors.file} />
 
         <p className={styles.form__title}>Production date</p>
-        <input {...register('date', { required: true })} type="date" />
+        <input {...register('date', { required: true })} type="date" data-testid="date" />
         <Alert text="Please enter date" show={errors.date} />
 
         <button type="submit">Create</button>
