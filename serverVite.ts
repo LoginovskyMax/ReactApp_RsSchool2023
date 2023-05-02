@@ -18,21 +18,20 @@ async function createServer() {
 
   app.use('*', async (req, res, next) => {
     const url = req.originalUrl;
+
     try {
       let template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
-
       template = await vite.transformIndexHtml(url, template);
+      const htmlApp = template.split(`<!--ssr-outlet-->`);
+      const { render } = await vite.ssrLoadModule('./src/serverApp.tsx');
 
-      const { render } = await vite.ssrLoadModule('/src/serverApp.tsx');
-      const AppHtml = await render(url);
-      const html = template.replace('<!--ssr-outlet-->', AppHtml);
-
-      await render(url, {
+      const { pipe } = await render(url, {
         onShellReady() {
-          res.write(html);
+          res.write(htmlApp[0]);
+          pipe(res);
         },
         onAllReady() {
-          res.write(html);
+          res.write(htmlApp[1]);
           res.end();
         },
       });

@@ -6,8 +6,11 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import App from './App';
 
-export const render = (url: string | Partial<Location>, opts?: RenderToPipeableStreamOptions) => {
-  const stream = renderToPipeableStream(
+export const render = (
+  url: string | Partial<Location>,
+  opts: RenderToPipeableStreamOptions | undefined
+) => {
+  return renderToPipeableStream(
     <Provider store={store}>
       <StaticRouter location={url}>
         <App />
@@ -15,5 +18,4 @@ export const render = (url: string | Partial<Location>, opts?: RenderToPipeableS
     </Provider>,
     opts
   );
-  return stream;
 };
