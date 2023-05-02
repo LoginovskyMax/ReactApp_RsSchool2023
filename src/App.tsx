@@ -9,13 +9,11 @@ import { useState } from 'react';
 
 const App = () => {
   const [isNotFound, setNotFound] = useState(false);
+
   const is404 = (mount: boolean) => {
-    if (mount) {
-      setNotFound(true);
-    } else {
-      setNotFound(false);
-    }
+    setNotFound(mount);
   };
+
   return (
     <div className="App">
       <Header is404={isNotFound}></Header>

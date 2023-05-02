@@ -24,7 +24,7 @@ export const DetailedCard = ({ id }: IProps) => {
       setHide(true);
       setTimeout(() => {
         setHide(false);
-        let currentImg = data.images.findIndex((img) => img === imageURL) + 1;
+        let currentImg = data.images.findIndex((img: string) => img === imageURL) + 1;
         if (currentImg === data.images.length) {
           currentImg = 0;
         }
